@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Travels | Explore the World</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        accent: {
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #059669;
+        }
+        
+        /* Glassmorphic Effects */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-compass text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 via-accent-600 to-slate-800 bg-clip-text text-transparent">
+                        Bharat Yatra
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#hero" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Home</a>
+                    <a href="#packages" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Packages</a>
+                    <a href="#calculator" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Trip Calculator</a>
+                    <a href="#destinations" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Popular Spots</a>
+                </nav>
+
+                <!-- Actions / Drawers Toggle Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleDrawer('wishlist')" class="relative p-2.5 text-slate-600 hover:text-brand-600 hover:bg-slate-100 rounded-xl transition-all">
+                        <i class="fa-regular fa-heart text-xl"></i>
+                        <span id="wishlist-badge" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                    </button>
+
+                    <button onclick="toggleDrawer('bookings')" class="relative p-2.5 text-slate-600 hover:text-brand-600 hover:bg-slate-100 rounded-xl transition-all">
+                        <i class="fa-regular fa-bookmark text-xl"></i>
+                        <span id="bookings-badge" class="hidden absolute -top-1 -right-1 bg-brand-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+                    </button>
+
+                    <a href="#calculator" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 shadow-md shadow-brand-500/20 hover:shadow-lg transition-all hover:-translate-y-0.5">
+                        Plan My Trip
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-4 space-y-2">
+            <a href="#hero" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 font-medium">Home</a>
+            <a href="#packages" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 font-medium">Packages</a>
+            <a href="#calculator" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 font-medium">Trip Calculator</a>
+            <a href="#destinations" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 font-medium">Popular Spots</a>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section id="hero" class="hero-bg relative min-h-[640px] flex items-center justify-center px-4 py-20 text-white">
+        <div class="max-w-5xl w-full mx-auto text-center space-y-8">
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider text-emerald-300 border border-white/20">
+                    <i class="fa-solid fa-sparkles"></i> Unforgettable Expeditions Await
+                </span>
+                <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+                    Explore Extraordinary Destinations Around the Globe
+                </h1>
+                <p class="text-lg sm:text-xl text-slate-200 font-light">
+                    Handcrafted travel experiences, tailored itineraries, and seamless booking for your next unforgettable holiday.
+                </p>
+            </div>
+
+            <!-- Booking Search Console -->
+            <div class="glass-panel text-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30 text-left max-w-4xl mx-auto">
+                <!-- Search Category Tabs -->
+                <div class="flex border-b border-slate-200/80 mb-6 gap-6 font-semibold text-sm">
+                    <button class="search-tab active border-b-2 border-brand-600 text-brand-600 pb-3 flex items-center gap-2" onclick="switchSearchTab(this, 'tours')">
+                        <i class="fa-solid fa-route"></i> Tour Packages
+                    </button>
+                    <button class="search-tab border-b-2 border-transparent text-slate-500 hover:text-slate-800 pb-3 flex items-center gap-2" onclick="switchSearchTab(this, 'hotels')">
+                        <i class="fa-solid fa-hotel"></i> Hotels
+                    </button>
+                    <button class="search-tab border-b-2 border-transparent text-slate-500 hover:text-slate-800 pb-3 flex items-center gap-2" onclick="switchSearchTab(this, 'flights')">
+                        <i class="fa-solid fa-plane"></i> Flights
+                    </button>
+                </div>
+
+                <!-- Search Inputs Form -->
+                <form onsubmit="handleHeroSearch(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Where to?</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-slate-400"></i>
+                            <input type="text" id="search-dest" placeholder="Bali, Paris, Swiss Alps..." class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none font-medium text-sm">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Check-In Date</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-calendar absolute left-3 top-3.5 text-slate-400"></i>
+                            <input type="date" id="search-date" class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none font-medium text-sm">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-500 uppercase">Guests</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user-group absolute left-3 top-3.5 text-slate-400"></i>
+                            <select id="search-guests" class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none font-medium text-sm">
+                                <option value="1">1 Traveler</option>
+                                <option value="2" selected>2 Travelers</option>
+                                <option value="4">4 Travelers</option>
+                                <option value="5">Family Pack (5+)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full py-3.5 px-6 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-600/30 transition-all hover:scale-[1.02]">
+                            <i class="fa-solid fa-magnifying-glass"></i> Search Now
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Travel Packages -->
+    <section id="packages" class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-12">
+            <span class="text-brand-600 font-bold uppercase tracking-wider text-sm">Curated Adventures</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Popular Tour Packages</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">Discover top-rated destinations tailored for every traveler style, complete with luxury stays, guided tours, and rich experiences.</p>
+            
+            <!-- Category Filter Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-2 pt-6">
+                <button onclick="filterPackages('All')" class="pkg-filter-btn active px-5 py-2 rounded-full font-semibold text-sm transition-all bg-brand-600 text-white shadow-md">All Packages</button>
+                <button onclick="filterPackages('Beach')" class="pkg-filter-btn px-5 py-2 rounded-full font-semibold text-sm transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-100">Tropical & Beach</button>
+                <button onclick="filterPackages('Mountain')" class="pkg-filter-btn px-5 py-2 rounded-full font-semibold text-sm transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-100">Mountains & Trek</button>
+                <button onclick="filterPackages('City')" class="pkg-filter-btn px-5 py-2 rounded-full font-semibold text-sm transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-100">City Escapes</button>
+                <button onclick="filterPackages('Cultural')" class="pkg-filter-btn px-5 py-2 rounded-full font-semibold text-sm transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-100">Cultural Wonders</button>
+            </div>
+        </div>
+
+        <!-- Package Grid Container -->
+        <div id="package-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamic Inject via JS -->
+        </div>
+    </section>
+
+    <!-- Interactive Trip Calculator & Itinerary Builder -->
+    <section id="calculator" class="py-20 bg-gradient-to-b from-slate-100 to-slate-200 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                
+                <!-- Left Details & Form Controls -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div>
+                        <span class="text-brand-600 font-bold uppercase tracking-wider text-sm">Real-time Budget Estimator</span>
+                        <h2 class="text-3xl font-extrabold text-slate-900 mt-1">Custom Trip Calculator & Planner</h2>
+                        <p class="text-slate-600 text-sm mt-2">Adjust choices below to immediately compute dynamic pricing based on hotel tier, activities, and duration.</p>
+                    </div>
+
+                    <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 space-y-6">
+                        
+                        <!-- Destination Selector -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-700">Select Primary Destination</label>
+                            <select id="calc-dest" onchange="updateCalculator()" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none font-medium">
+                                <option value="bali" data-base="120" selected>Bali, Indonesia ($120/night base)</option>
+                                <option value="swiss" data-base="250">Swiss Alps, Switzerland ($250/night base)</option>
+                                <option value="paris" data-base="210">Paris, France ($210/night base)</option>
+                                <option value="kyoto" data-base="160">Kyoto, Japan ($160/night base)</option>
+                                <option value="santorini" data-base="190">Santorini, Greece ($190/night base)</option>
+                            </select>
+                        </div>
+
+                        <!-- Range Sliders for Duration & Travelers -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-bold text-slate-700">Duration (Nights)</span>
+                                    <span id="calc-nights-val" class="font-bold text-brand-600">5 Nights</span>
+                                </div>
+                                <input type="range" id="calc-nights" min="2" max="14" value="5" oninput="updateCalculator()" class="w-full accent-brand-600 cursor-pointer">
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="font-bold text-slate-700">Travelers</span>
+                                    <span id="calc-guests-val" class="font-bold text-brand-600">2 Persons</span>
+                                </div>
+                                <input type="range" id="calc-guests" min="1" max="8" value="2" oninput="updateCalculator()" class="w-full accent-brand-600 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Accommodation Level radio buttons -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-700">Accommodation Tier</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="cursor-pointer border border-slate-200 rounded-xl p-3 flex flex-col items-center hover:border-brand-500 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50/50">
+                                    <input type="radio" name="calc-tier" value="1.0" class="sr-only" onchange="updateCalculator()" checked>
+                                    <i class="fa-solid fa-hotel text-slate-500 mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-800">Standard 3★</span>
+                                    <span class="text-[10px] text-slate-500">Base Price</span>
+                                </label>
+                                <label class="cursor-pointer border border-slate-200 rounded-xl p-3 flex flex-col items-center hover:border-brand-500 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50/50">
+                                    <input type="radio" name="calc-tier" value="1.4" class="sr-only" onchange="updateCalculator()">
+                                    <i class="fa-solid fa-star text-amber-500 mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-800">Deluxe 4★</span>
+                                    <span class="text-[10px] text-slate-500">+40%</span>
+                                </label>
+                                <label class="cursor-pointer border border-slate-200 rounded-xl p-3 flex flex-col items-center hover:border-brand-500 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50/50">
+                                    <input type="radio" name="calc-tier" value="1.9" class="sr-only" onchange="updateCalculator()">
+                                    <i class="fa-solid fa-crown text-amber-500 mb-1"></i>
+                                    <span class="text-xs font-bold text-slate-800">Luxury 5★</span>
+                                    <span class="text-[10px] text-slate-500">+90%</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Optional Add-ons -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-700">Optional Package Add-Ons</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center justify-between p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">
+                                    <div class="flex items-center gap-3">
+                                        <input type="checkbox" id="addon-transfer" value="80" onchange="updateCalculator()" class="rounded text-brand-600 focus:ring-brand-500 h-4 w-4">
+                                        <span class="text-sm font-medium text-slate-700">Airport Private Pickup & Return</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-500">+$80</span>
+                                </label>
+                                <label class="flex items-center justify-between p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">
+                                    <div class="flex items-center gap-3">
+                                        <input type="checkbox" id="addon-meals" value="250" onchange="updateCalculator()" class="rounded text-brand-600 focus:ring-brand-500 h-4 w-4">
+                                        <span class="text-sm font-medium text-slate-700">All-Inclusive Gourmet Dining</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-500">+$250 / person</span>
+                                </label>
+                                <label class="flex items-center justify-between p-3 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50">
+                                    <div class="flex items-center gap-3">
+                                        <input type="checkbox" id="addon-guide" value="150" onchange="updateCalculator()" class="rounded text-brand-600 focus:ring-brand-500 h-4 w-4">
+                                        <span class="text-sm font-medium text-slate-700">Private Tour Guide & Entry Passes</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-500">+$150</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right Cost Summary Output Card -->
+                <div class="lg:col-span-5 lg:sticky lg:top-28">
+                    <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl space-y-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-500/10 rounded-full blur-2xl"></div>
+                        
+                        <div class="border-b border-slate-800 pb-4">
+                            <span class="text-brand-400 font-semibold text-xs uppercase tracking-widest">Calculated Estimate</span>
+                            <h3 class="text-2xl font-bold mt-1">Trip Summary</h3>
+                        </div>
+
+                        <!-- Calculation breakdown list -->
+                        <div class="space-y-3 text-sm text-slate-300">
+                            <div class="flex justify-between">
+                                <span>Base Stays & Accommodations:</span>
+                                <span id="summary-stay" class="font-semibold text-white">$0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Add-ons & Experiences:</span>
+                                <span id="summary-addons" class="font-semibold text-white">$0</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400 text-xs">
+                                <span>Estimated Taxes & Service (10%):</span>
+                                <span id="summary-tax" class="font-semibold">$0</span>
+                            </div>
+                            
+                            <div class="border-t border-slate-800 pt-3 flex justify-between items-baseline">
+                                <div>
+                                    <span class="text-base font-bold text-white block">Total Projected Cost</span>
+                                    <span class="text-xs text-slate-400">All travelers included</span>
+                                </div>
+                                <span id="summary-total" class="text-3xl font-extrabold text-brand-400">$0</span>
+                            </div>
+                        </div>
+
+                        <button onclick="bookCustomTrip()" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-500 to-accent-500 text-white font-bold hover:from-brand-600 hover:to-accent-600 transition-all shadow-lg shadow-brand-500/20">
+                            Proceed to Book This Custom Itinerary
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Spots Highlight -->
+    <section id="destinations" class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+            <div>
+                <span class="text-brand-600 font-bold uppercase tracking-wider text-sm">Top Global Attractions</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-1">Trending Destinations</h2>
+            </div>
+            <p class="text-slate-500 text-sm max-w-md mt-2 sm:mt-0"> Hand-picked places loved by our global travel community for culture, nature, and adventure.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Destination Card 1 -->
+            <div class="group relative rounded-2xl overflow-hidden h-80 shadow-md">
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80" alt="Bali" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5 text-white">
+                    <span class="bg-emerald-500/80 backdrop-blur-md text-[10px] uppercase font-bold px-2 py-1 rounded">Indonesia</span>
+                    <h3 class="text-xl font-bold mt-1">Bali Beaches</h3>
+                    <p class="text-xs text-slate-300">From $890 / person</p>
+                </div>
+            </div>
+
+            <!-- Destination Card 2 -->
+            <div class="group relative rounded-2xl overflow-hidden h-80 shadow-md">
+                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80" alt="Paris" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5 text-white">
+                    <span class="bg-emerald-500/80 backdrop-blur-md text-[10px] uppercase font-bold px-2 py-1 rounded">France</span>
+                    <h3 class="text-xl font-bold mt-1">Paris Romance</h3>
+                    <p class="text-xs text-slate-300">From $1,250 / person</p>
+                </div>
+            </div>
+
+            <!-- Destination Card 3 -->
+            <div class="group relative rounded-2xl overflow-hidden h-80 shadow-md">
+                <img src="https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80" alt="Swiss Alps" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5 text-white">
+                    <span class="bg-emerald-500/80 backdrop-blur-md text-[10px] uppercase font-bold px-2 py-1 rounded">Switzerland</span>
+                    <h3 class="text-xl font-bold mt-1">Swiss Alps</h3>
+                    <p class="text-xs text-slate-300">From $1,420 / person</p>
+                </div>
+            </div>
+
+            <!-- Destination Card 4 -->
+            <div class="group relative rounded-2xl overflow-hidden h-80 shadow-md">
+                <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80" alt="Kyoto" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5 text-white">
+                    <span class="bg-emerald-500/80 backdrop-blur-md text-[10px] uppercase font-bold px-2 py-1 rounded">Japan</span>
+                    <h3 class="text-xl font-bold mt-1">Kyoto Temples</h3>
+                    <p class="text-xs text-slate-300">From $1,100 / person</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3 text-white">
+                    <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <span class="text-xl font-bold">Wanderlust</span>
+                </div>
+                <p class="text-sm">Making world exploration accessible, tailored, and effortless for every traveler.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-3">Quick Links</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#hero" class="hover:text-brand-400 transition-colors">Home</a></li>
+                    <li><a href="#packages" class="hover:text-brand-400 transition-colors">Featured Packages</a></li>
+                    <li><a href="#calculator" class="hover:text-brand-400 transition-colors">Trip Calculator</a></li>
+                    <li><a href="#destinations" class="hover:text-brand-400 transition-colors">Popular Destinations</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-3">Support & Legal</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-brand-400 transition-colors">FAQ</a></li>
+                    <li><a href="#" class="hover:text-brand-400 transition-colors">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-brand-400 transition-colors">Contact Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-3">Newsletter</h4>
+                <p class="text-sm mb-3">Get secret discounts delivered directly to your inbox.</p>
+                <form onsubmit="event.preventDefault(); showToast('Subscribed to newsletter successfully!');" class="flex">
+                    <input type="email" placeholder="Your email" required class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-l-lg text-sm focus:outline-none text-white">
+                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 rounded-r-lg font-bold text-sm">Join</button>
+                </form>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-xs text-center text-slate-500">
+            © 2026 Wanderlust Travels. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Wishlist Drawer (Slide Over) -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="toggleDrawer('wishlist')"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-xl flex flex-col">
+                <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
+                    <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-heart text-rose-500"></i> Saved Wishlist</h3>
+                    <button onclick="toggleDrawer('wishlist')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="wishlist-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Dynamic Wishlist Cards -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Bookings Drawer (Slide Over) -->
+    <div id="bookings-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onclick="toggleDrawer('bookings')"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-xl flex flex-col">
+                <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
+                    <h3 class="text-lg font-bold flex items-center gap-2"><i class="fa-solid fa-ticket text-brand-400"></i> My Reservations</h3>
+                    <button onclick="toggleDrawer('bookings')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="bookings-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Dynamic Booking Cards -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Checkout Modal -->
+    <div id="booking-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all">
+            <div class="bg-gradient-to-r from-brand-600 to-accent-600 p-6 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold" id="modal-pkg-title">Complete Reservation</h3>
+                    <p class="text-xs text-emerald-100" id="modal-pkg-sub">Provide your info to finalize booking</p>
+                </div>
+                <button onclick="closeModal('booking-modal')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <form id="checkout-form" onsubmit="confirmBooking(event)" class="p-6 space-y-4">
+                <input type="hidden" id="modal-pkg-id">
+                
+                <div class="space-y-1">
+                    <label class="text-xs font-bold text-slate-600 uppercase">Full Name</label>
+                    <input type="text" required id="cust-name" placeholder="John Doe" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-600 uppercase">Email Address</label>
+                        <input type="email" required id="cust-email" placeholder="john@example.com" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-bold text-slate-600 uppercase">Travel Date</label>
+                        <input type="date" required id="cust-date" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm">
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-sm">
+                    <div class="flex justify-between text-slate-600">
+                        <span>Price per Person:</span>
+                        <span id="modal-unit-price" class="font-bold text-slate-800">$0</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Travelers:</span>
+                        <span id="modal-travelers-count" class="font-bold text-slate-800">1</span>
+                    </div>
+                    <div class="border-t border-slate-200 pt-2 flex justify-between font-bold text-slate-900 text-base">
+                        <span>Total Due:</span>
+                        <span id="modal-total-price" class="text-brand-600">$0</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i> Confirm & Pay Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation Receipt Modal -->
+    <div id="receipt-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center space-y-6 shadow-2xl border border-slate-100">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="text-2xl font-black text-slate-900">Booking Confirmed!</h3>
+                <p class="text-xs text-slate-500">Your trip reference number is <span id="receipt-id" class="font-mono font-bold text-brand-600">#WL-0000</span></p>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-2xl text-left text-sm space-y-2 border border-slate-200">
+                <div class="flex justify-between"><span class="text-slate-500">Package:</span> <span id="receipt-pkg" class="font-bold text-slate-800">Destination</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Customer:</span> <span id="receipt-name" class="font-bold text-slate-800">Name</span></div>
+                <div class="flex justify-between"><span class="text-slate-500">Date:</span> <span id="receipt-date" class="font-bold text-slate-800">Date</span></div>
+                <div class="flex justify-between border-t border-slate-200 pt-2"><span class="text-slate-500">Amount Paid:</span> <span id="receipt-price" class="font-bold text-brand-600">$0</span></div>
+            </div>
+
+            <button onclick="closeModal('receipt-modal')" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition-all">
+                Close Receipt
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-info text-brand-400"></i>
+        <span id="toast-message" class="text-sm font-medium">Notification message</span>
+    </div>
+
+    <script>
+        // Data Structures
+        const packages = [
+            {
+                id: 'pkg-1',
+                title: 'Bali Ultimate Tropical Getaway',
+                category: 'Beach',
+                destination: 'Bali, Indonesia',
+                duration: '6 Days / 5 Nights',
+                rating: 4.9,
+                reviews: 128,
+                price: 890,
+                image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+                badge: 'Popular'
+            },
+            {
+                id: 'pkg-2',
+                title: 'Swiss Alps Hiking & Express Train',
+                category: 'Mountain',
+                destination: 'Interlaken, Switzerland',
+                duration: '7 Days / 6 Nights',
+                rating: 4.8,
+                reviews: 94,
+                price: 1420,
+                image: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80',
+                badge: 'Best Value'
+            },
+            {
+                id: 'pkg-3',
+                title: 'Parisian Lights & Fine Dining',
+                category: 'City',
+                destination: 'Paris, France',
+                duration: '5 Days / 4 Nights',
+                rating: 4.7,
+                reviews: 210,
+                price: 1250,
+                image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+                badge: 'Trending'
+            },
+            {
+                id: 'pkg-4',
+                title: 'Kyoto Cherry Blossom & Shrine Tour',
+                category: 'Cultural',
+                destination: 'Kyoto, Japan',
+                duration: '8 Days / 7 Nights',
+                rating: 4.9,
+                reviews: 175,
+                price: 1100,
+                image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
+                badge: 'Top Rated'
+            },
+            {
+                id: 'pkg-5',
+                title: 'Santorini Sunset Villa Escapes',
+                category: 'Beach',
+                destination: 'Santorini, Greece',
+                duration: '5 Days / 4 Nights',
+                rating: 4.8,
+                reviews: 86,
+                price: 1350,
+                image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80',
+                badge: 'Luxury'
+            },
+            {
+                id: 'pkg-6',
+                title: 'Machu Picchu Historic Inca Trail',
+                category: 'Mountain',
+                destination: 'Cusco, Peru',
+                duration: '6 Days / 5 Nights',
+                rating: 4.9,
+                reviews: 62,
+                price: 980,
+                image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80',
+                badge: 'Adventure'
+            }
+        ];
+
+        let wishlist = JSON.parse(localStorage.getItem('wl_wishlist') || '[]');
+        let bookings = JSON.parse(localStorage.getItem('wl_bookings') || '[]');
+        let currentModalPackage = null;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPackages('All');
+            updateBadges();
+            updateCalculator();
+            
+            // Default current date on picker inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('search-date').value = today;
+            document.getElementById('cust-date').value = today;
+        });
+
+        // Render Package Cards
+        function renderPackages(category) {
+            const container = document.getElementById('package-grid');
+            container.innerHTML = '';
+
+            const filtered = category === 'All' 
+                ? packages 
+                : packages.filter(p => p.category === category);
+
+            filtered.forEach(pkg => {
+                const isWishlisted = wishlist.includes(pkg.id);
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group";
+                
+                card.innerHTML = `
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="${pkg.image}" alt="${pkg.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                            ${pkg.badge}
+                        </span>
+                        <button onclick="toggleWishlist('${pkg.id}')" class="absolute top-4 right-4 w-9 h-9 rounded-full ${isWishlisted ? 'bg-rose-500 text-white' : 'bg-white/80 text-slate-700 hover:text-rose-500'} backdrop-blur-md flex items-center justify-center transition-colors">
+                            <i class="fa-${isWishlisted ? 'solid' : 'regular'} fa-heart"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                                <span><i class="fa-solid fa-location-dot text-brand-500 mr-1"></i> ${pkg.destination}</span>
+                                <span><i class="fa-regular fa-clock text-brand-500 mr-1"></i> ${pkg.duration}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors">${pkg.title}</h3>
+                        </div>
+
+                        <div class="flex items-center space-x-1 text-sm text-amber-500 font-bold">
+                            <i class="fa-solid fa-star"></i>
+                            <span>${pkg.rating}</span>
+                            <span class="text-xs text-slate-400 font-normal">(${pkg.reviews} reviews)</span>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Starting from</span>
+                                <span class="text-2xl font-extrabold text-slate-900">$${pkg.price}</span>
+                                <span class="text-xs text-slate-500">/ person</span>
+                            </div>
+                            <button onclick="openBookingModal('${pkg.id}')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-sm shadow-md shadow-brand-600/20 transition-all hover:scale-105">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Package Filters
+        function filterPackages(cat) {
+            document.querySelectorAll('.pkg-filter-btn').forEach(btn => {
+                if (btn.innerText.includes(cat) || (cat === 'All' && btn.innerText.includes('All'))) {
+                    btn.className = "pkg-filter-btn active px-5 py-2 rounded-full font-semibold text-sm transition-all bg-brand-600 text-white shadow-md";
+                } else {
+                    btn.className = "pkg-filter-btn px-5 py-2 rounded-full font-semibold text-sm transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-100";
+                }
+            });
+            renderPackages(cat);
+        }
+
+        // Search Console Tabs Toggle
+        function switchSearchTab(element, type) {
+            document.querySelectorAll('.search-tab').forEach(tab => {
+                tab.className = "search-tab border-b-2 border-transparent text-slate-500 hover:text-slate-800 pb-3 flex items-center gap-2";
+            });
+            element.className = "search-tab active border-b-2 border-brand-600 text-brand-600 pb-3 flex items-center gap-2";
+            showToast(`Switched search mode to ${type}`);
+        }
+
+        function handleHeroSearch(e) {
+            e.preventDefault();
+            const dest = document.getElementById('search-dest').value;
+            if (dest) {
+                showToast(`Searching best deals for "${dest}"...`);
+                document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showToast(`Please enter a destination to search.`);
+            }
+        }
+
+        // Interactive Cost Calculator
+        function updateCalculator() {
+            const destSelect = document.getElementById('calc-dest');
+            const basePrice = parseFloat(destSelect.options[destSelect.selectedIndex].dataset.base);
+            
+            const nights = parseInt(document.getElementById('calc-nights').value);
+            const guests = parseInt(document.getElementById('calc-guests').value);
+            
+            document.getElementById('calc-nights-val').innerText = `${nights} Nights`;
+            document.getElementById('calc-guests-val').innerText = `${guests} Person${guests > 1 ? 's' : ''}`;
+
+            const tierMultiplier = parseFloat(document.querySelector('input[name="calc-tier"]:checked').value);
+
+            let addonsCost = 0;
+            if (document.getElementById('addon-transfer').checked) addonsCost += 80;
+            if (document.getElementById('addon-meals').checked) addonsCost += (250 * guests);
+            if (document.getElementById('addon-guide').checked) addonsCost += 150;
+
+            const stayCost = basePrice * nights * guests * tierMultiplier;
+            const taxCost = (stayCost + addonsCost) * 0.10;
+            const grandTotal = stayCost + addonsCost + taxCost;
+
+            document.getElementById('summary-stay').innerText = `$${stayCost.toFixed(0)}`;
+            document.getElementById('summary-addons').innerText = `$${addonsCost.toFixed(0)}`;
+            document.getElementById('summary-tax').innerText = `$${taxCost.toFixed(0)}`;
+            document.getElementById('summary-total').innerText = `$${grandTotal.toFixed(0)}`;
+        }
+
+        function bookCustomTrip() {
+            const destName = document.getElementById('calc-dest').options[document.getElementById('calc-dest').selectedIndex].text.split('(')[0];
+            const totalPrice = document.getElementById('summary-total').innerText;
+            
+            currentModalPackage = {
+                title: `Custom Itinerary: ${destName}`,
+                price: parseFloat(totalPrice.replace('$', '')),
+                destination: destName
+            };
+
+            document.getElementById('modal-pkg-title').innerText = currentModalPackage.title;
+            document.getElementById('modal-pkg-sub').innerText = 'Custom Built Package';
+            document.getElementById('modal-unit-price').innerText = totalPrice;
+            document.getElementById('modal-travelers-count').innerText = document.getElementById('calc-guests').value;
+            document.getElementById('modal-total-price').innerText = totalPrice;
+
+            openModal('booking-modal');
+        }
+
+        // Open Standard Package Booking
+        function openBookingModal(pkgId) {
+            const pkg = packages.find(p => p.id === pkgId);
+            currentModalPackage = pkg;
+
+            document.getElementById('modal-pkg-title').innerText = pkg.title;
+            document.getElementById('modal-pkg-sub').innerText = pkg.destination;
+            document.getElementById('modal-unit-price').innerText = `$${pkg.price}`;
+            document.getElementById('modal-travelers-count').innerText = '1 Traveler';
+            document.getElementById('modal-total-price').innerText = `$${pkg.price}`;
+
+            openModal('booking-modal');
+        }
+
+        // Confirm Booking Handler
+        function confirmBooking(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value;
+            const date = document.getElementById('cust-date').value;
+            const bookingId = 'WL-' + Math.floor(100000 + Math.random() * 900000);
+            const total = document.getElementById('modal-total-price').innerText;
+
+            const newBooking = {
+                id: bookingId,
+                packageTitle: currentModalPackage.title,
+                customerName: name,
+                date: date,
+                price: total
+            };
+
+            bookings.unshift(newBooking);
+            localStorage.setItem('wl_bookings', JSON.stringify(bookings));
+            updateBadges();
+
+            closeModal('booking-modal');
+
+            // Render Receipt Modal
+            document.getElementById('receipt-id').innerText = `#${bookingId}`;
+            document.getElementById('receipt-pkg').innerText = currentModalPackage.title;
+            document.getElementById('receipt-name').innerText = name;
+            document.getElementById('receipt-date').innerText = date;
+            document.getElementById('receipt-price').innerText = total;
+
+            openModal('receipt-modal');
+            showToast('Booking successfully confirmed!');
+        }
+
+        // Wishlist Logic
+        function toggleWishlist(id) {
+            if (wishlist.includes(id)) {
+                wishlist = wishlist.filter(item => item !== id);
+                showToast('Removed from wishlist');
+            } else {
+                wishlist.push(id);
+                showToast('Added to wishlist!');
+            }
+            localStorage.setItem('wl_wishlist', JSON.stringify(wishlist));
+            updateBadges();
+            renderPackages('All');
+        }
+
+        // Update Drawer Badges
+        function updateBadges() {
+            const wBadge = document.getElementById('wishlist-badge');
+            const bBadge = document.getElementById('bookings-badge');
+
+            if (wishlist.length > 0) {
+                wBadge.innerText = wishlist.length;
+                wBadge.classList.remove('hidden');
+            } else {
+                wBadge.classList.add('hidden');
+            }
+
+            if (bookings.length > 0) {
+                bBadge.innerText = bookings.length;
+                bBadge.classList.remove('hidden');
+            } else {
+                bBadge.classList.add('hidden');
+            }
+
+            renderWishlistDrawer();
+            renderBookingsDrawer();
+        }
+
+        // Render Drawers
+        function renderWishlistDrawer() {
+            const container = document.getElementById('wishlist-container');
+            if (wishlist.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-center text-sm py-8">Your wishlist is currently empty.</p>`;
+                return;
+            }
+
+            const items = packages.filter(p => wishlist.includes(p.id));
+            container.innerHTML = items.map(item => `
+                <div class="flex items-center gap-4 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-slate-800 text-sm truncate">${item.title}</h4>
+                        <span class="text-xs font-bold text-brand-600">$${item.price} / person</span>
+                    </div>
+                    <button onclick="toggleWishlist('${item.id}')" class="text-slate-400 hover:text-rose-500 p-2"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function renderBookingsDrawer() {
+            const container = document.getElementById('bookings-container');
+            if (bookings.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-center text-sm py-8">No active reservations stored.</p>`;
+                return;
+            }
+
+            container.innerHTML = bookings.map(b => `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-mono font-bold text-brand-600">#${b.id}</span>
+                        <span class="text-slate-400">${b.date}</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-sm">${b.packageTitle}</h4>
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-200 text-xs">
+                        <span class="text-slate-500">Reserved for ${b.customerName}</span>
+                        <span class="font-bold text-slate-900">${b.price}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Utility Helpers
+        function toggleDrawer(type) {
+            const drawer = document.getElementById(`${type}-drawer`);
+            drawer.classList.toggle('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
